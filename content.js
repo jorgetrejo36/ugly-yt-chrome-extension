@@ -90,3 +90,56 @@ if (document.body) {
     observer.observe(document.body, { childList: true, subtree: true });
   });
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Remove secondary results on watch page
+////////////////////////////////////////////////////////////////////////////////
+
+function removeYtdSecondaryResults() {
+  const isWatchPage = window.location.pathname === "/watch";
+  const ytdSecondaryResults = document.querySelector('#related > ytd-watch-next-secondary-results-renderer');
+  const existingMessage = document.getElementById('other-freedom-message-injected');
+  
+  if (isWatchPage) {
+    if (ytdSecondaryResults) {
+      // Hide the element instead of removing it
+      ytdSecondaryResults.style.display = 'none';
+      
+      // Only create message if it doesn't exist
+      if (!existingMessage) {
+        const message = document.createElement('div');
+        message.id = 'other-freedom-message-injected';
+        message.style.cssText = 'font-size: 24px; color: white;';
+        message.innerHTML = '<h1>No doom scrolling for you bimbo!</h1>';
+        ytdSecondaryResults.parentNode.insertBefore(message, ytdSecondaryResults.nextSibling);
+      }
+    }
+  } else {
+    // IMMEDIATELY hide the element when leaving watch page
+    if (ytdSecondaryResults) {
+      ytdSecondaryResults.style.display = 'none';
+    }
+    
+    // Clean up our message
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+  }
+}
+
+// Wait for body to exist, then start observing
+if (document.body) {
+  removeYtdSecondaryResults();
+  const observer = new MutationObserver(() => {
+    removeYtdSecondaryResults();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    removeYtdSecondaryResults();
+    const observer = new MutationObserver(() => {
+      removeYtdSecondaryResults();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+}
