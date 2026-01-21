@@ -6,6 +6,7 @@ I hate doom-scrolling and wasting my life so I made this little extension just f
 
 - No access for YouTube shorts
 - No main `ytd-browse` element on the homepage (where they auto-suggest videos)
+- No secondary results on the `/watch` page
 
 Still very much a work in progress but just trying to be less an addict day by day.
 
